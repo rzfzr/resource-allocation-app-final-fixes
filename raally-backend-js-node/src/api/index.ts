@@ -29,7 +29,7 @@ app.use(authMiddleware);
 setupSwaggerUI(app);
 
 // Default rate limiter
-const defaultRateLimiter = createRateLimiter(10);
+const defaultRateLimiter = createRateLimiter(50);
 app.use(defaultRateLimiter);
 
 // Enables Helmet, a set of tools to

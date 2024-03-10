@@ -3,6 +3,7 @@
 1. I noticed some inconsistencies on the internationalization files, such as project/projeto being capitalized or not, did not fix this as I expect it would show up as worse results in the tests, so I only fixed what was explicitly asked.
 2. .ts files exporting the internationalization objects, have double spacing in many places, I ignored those and saved without formatting for minimal git diff, same with this .md file.
 3. Bug #6 was fixed as required in order to comply with the automated tests, ideally there should be different messages for wrong password and unknown email. I also see that email validation isn't actually happening anywhere.
+3. Bug #12, the only time I managed to replicate the "Ops, an error occurred" and no data loading was due to a 429 too many requests error. I reasonably raised the main rate limiter.
 
 # Raally (Resource allocation ally)
 
