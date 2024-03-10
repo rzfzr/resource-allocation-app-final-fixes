@@ -11,8 +11,10 @@ export default class AuthCurrentTenant {
       return null;
     }
 
+    const allowedRoles = [Roles.values.admin, Roles.values.custom];
+
     const activeTenants = currentUser.tenants.filter(
-      (tenantUser) => tenantUser.status === 'active' && tenantUser.roles.includes(Roles.values.admin),
+      (tenantUser) => tenantUser.status === 'active' && allowedRoles.some((allowed) => tenantUser.roles.includes(allowed)),
     );
 
     if (!activeTenants || !activeTenants.length) {
