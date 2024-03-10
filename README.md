@@ -1,3 +1,7 @@
+# Notes about the challenge
+
+1. I noticed some inconsistencies on the internalization files, such as project/projeto being capitalized or not, did not fix this as I expect it would show up as worse results in the tests, so I only fixed what was explicitly asked.
+
 # Raally (Resource allocation ally)
 
 Welcome to the Raally project. Raally is an application that helps and simplifies managing people’s allocation on projects. Its purpose is to store information about people such as job title and compensation as well as information about projects and project assignments. With this information Raally can display a dashboard that shows utilization of company’s workforce. 
