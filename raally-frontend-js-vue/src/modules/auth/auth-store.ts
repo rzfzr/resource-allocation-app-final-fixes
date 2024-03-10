@@ -411,6 +411,7 @@ export default {
         commit('AUTH_SUCCESS', {
           currentUser,
         });
+        SettingsService.applyThemeFromTenant();
 
         routerAsync().push('/');
       } catch (error) {
@@ -420,10 +421,14 @@ export default {
       }
     },
 
-    async doSignout({ commit }) {
+    async doSignout({ commit, dispatch }) {
       try {
         commit('AUTH_START');
         await AuthService.signout();
+
+        dispatch(`auth/doSelectTenant`, null, {
+          root: true,
+        });
 
         commit('AUTH_SUCCESS', {
           currentUser: null,
