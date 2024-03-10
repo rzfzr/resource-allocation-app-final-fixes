@@ -2206,6 +2206,63 @@
             "description": "Too Many Requests."
           }
         }
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Assignment"
+        ],
+        "summary": "Update an assignment",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentCompleteInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Too Many Requests."
+          }
+        }
       }
     },
     "/tenant/{tenantId}/assignment": {
@@ -2399,6 +2456,58 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Too Many Requests."
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Assignment"
+        ],
+        "summary": "Create a new assignment",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentCompleteInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "429": {
             "description": "Too Many Requests."
@@ -4124,6 +4233,61 @@
             "type": "string"
           }    
         }
+      },
+      "AssignmentCompleteInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "notes": {
+                "type": "string",
+                "example": "123"
+              },
+              "role": {
+                "type": "string",
+                "example": "technical-team-lead"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date",
+                "example": "2022-10-11"
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date",
+                "example": "2022-07-30"
+              },
+              "hoursPerWeek": {
+                "type": "integer",
+                "format": "int32",
+                "example": 30
+              },
+              "project": {
+                "type": "string",
+                "format": "uuid",
+                "example": "00e6d253-1f35-42d9-8b4c-f5340bfa4fa2"
+              },
+              "person": {
+                "type": "string",
+                "format": "uuid",
+                "example": "eada754e-dc11-4fe7-a0d1-39bd513186ef"
+              }
+            },
+            "required": [
+              "notes",
+              "role",
+              "endDate",
+              "startDate",
+              "hoursPerWeek",
+              "project",
+              "person"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
       },
       "AuditLog": {
         "type": "object",
