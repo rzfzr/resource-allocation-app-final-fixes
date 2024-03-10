@@ -40,7 +40,10 @@
         :required="fields.title.required"
       >
         <el-col :lg="11" :md="16" :sm="24">
-          <el-input v-model="model[fields.title.name]" :placeholder="fields.title.placeholder" />
+          <el-input
+            v-model="model[fields.title.name]"
+            :placeholder="fields.title.placeholder"
+          />
 
           <div
             v-if="fields.title.hint"
@@ -57,7 +60,11 @@
         :required="fields.effectiveDate.required"
       >
         <el-col :lg="11" :md="16" :sm="24">
-          <el-date-picker type="date" v-model="model[fields.effectiveDate.name]" :placeholder="fields.effectiveDate.placeholder"></el-date-picker>
+          <el-date-picker
+            type="date"
+            v-model="model[fields.effectiveDate.name]"
+            :placeholder="fields.effectiveDate.placeholder"
+          ></el-date-picker>
 
           <div
             v-if="fields.effectiveDate.hint"
@@ -81,20 +88,19 @@
 
           <el-button
             :disabled="saveLoading"
-            @click="doCancel"
-            icon="el-icon-fa-close"
-          >
-            <app-i18n code="common.cancel"></app-i18n>
-          </el-button>
-
-          <el-button
-            :disabled="saveLoading"
             @click="doReset"
             icon="el-icon-fa-undo"
           >
             <app-i18n code="common.reset"></app-i18n>
           </el-button>
-          
+
+          <el-button
+            :disabled="saveLoading"
+            @click="doCancel"
+            icon="el-icon-fa-close"
+          >
+            <app-i18n code="common.cancel"></app-i18n>
+          </el-button>
         </div>
       </el-form-item>
     </el-form>
