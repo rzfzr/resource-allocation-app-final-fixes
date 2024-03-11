@@ -7,6 +7,8 @@ import { IRepositoryOptions } from './IRepositoryOptions';
  * Abstracts some basic Sequelize operations.
  * See https://sequelize.org/v5/index.html to learn how to customize it.
  */
+
+const today = new Date().toISOString().slice(0, 10);
 export default class SequelizeRepository {
   /**
    * Cleans the database.
@@ -55,7 +57,7 @@ export default class SequelizeRepository {
     const totalAvailableHours = availability.reduce((partialSum, row) => partialSum + row.workAvailability, 0);
 
     const assignedHours = await options.database.sequelize.query(
-      "SELECT SUM(hoursPerWeek) as assignedHours FROM assignments WHERE (endDate IS NULL OR endDate < '8/31/2022') AND tenantId = '" + tenant.id + "'",
+      "SELECT SUM(hoursPerWeek) as assignedHours FROM assignments WHERE (endDate IS NULL OR endDate > '"+today+"') AND tenantId = '" + tenant.id + "'",
       {
         raw: true,
         type: QueryTypes.SELECT
@@ -124,7 +126,7 @@ export default class SequelizeRepository {
     const availability = await options.database.sequelize.query(
       "SELECT fullName, availability.workAvailability, assignedHours.assignedHours, jobTitles.title FROM people \
         LEFT JOIN (SELECT personId, MAX(effectiveDate), workAvailability FROM compensations WHERE tenantId = '" + tenant.id + "' GROUP BY personId) as availability ON people.Id = availability.personId \
-        LEFT JOIN (SELECT personId, SUM(hoursPerWeek) as assignedHours FROM assignments WHERE (endDate IS NULL OR endDate < '8/31/2022') AND tenantId = '" + tenant.id + "' GROUP BY personId) AS assignedHours ON people.Id = assignedHours.personId \
+        LEFT JOIN (SELECT personId, SUM(hoursPerWeek) as assignedHours FROM assignments WHERE (endDate IS NULL OR endDate > '"+today+"') AND tenantId = '" + tenant.id + "' GROUP BY personId) AS assignedHours ON people.Id = assignedHours.personId \
         LEFT JOIN (SELECT personId, title, MAX(effectiveDate) as date FROM jobTitles WHERE tenantId = '" + tenant.id + "' GROUP BY personId) AS jobTitles ON people.Id = jobTitles.personId \
       WHERE tenantId = '" + tenant.id + "' AND workAvailability > 0",
       {  
@@ -167,7 +169,7 @@ export default class SequelizeRepository {
     const availability = await options.database.sequelize.query(
       "SELECT fullName, availability.workAvailability, assignedHours.assignedHours, jobTitles.title FROM people \
         LEFT JOIN (SELECT personId, MAX(effectiveDate), workAvailability FROM compensations WHERE tenantId = '" + tenant.id + "' GROUP BY personId) as availability ON people.Id = availability.personId \
-        LEFT JOIN (SELECT personId, SUM(hoursPerWeek) as assignedHours FROM assignments WHERE (endDate IS NULL OR endDate < '8/31/2022') AND tenantId = '" + tenant.id + "' GROUP BY personId) AS assignedHours ON people.Id = assignedHours.personId \
+        LEFT JOIN (SELECT personId, SUM(hoursPerWeek) as assignedHours FROM assignments WHERE (endDate IS NULL OR endDate > '"+today+"') AND tenantId = '" + tenant.id + "' GROUP BY personId) AS assignedHours ON people.Id = assignedHours.personId \
         LEFT JOIN (SELECT personId, title, MAX(effectiveDate) as date FROM jobTitles WHERE tenantId = '" + tenant.id + "' GROUP BY personId) AS jobTitles ON people.Id = jobTitles.personId \
       WHERE tenantId = '" + tenant.id + "' AND workAvailability > 0",
       {  
