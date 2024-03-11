@@ -21,14 +21,19 @@ export default async (req, res, next) => {
 
     let payloadValues;
 
-    await Promise.all([dashboardService.getUsageByHoursData(),
-                 dashboardService.getNumberOfPeoplePerRole(),
-                 dashboardService.getUsageByPeopleData(),
-                 dashboardService.getIdlenessPerRoleData()]).then((values) => {
-                  payloadValues = values;                  
-                 });
+    const startTime = process.hrtime();
 
-    payload = generatePayload(dashboardService.getGatheringTime(), payloadValues);
+    await Promise.all([dashboardService.getUsageByHoursData(),
+    dashboardService.getNumberOfPeoplePerRole(),
+    dashboardService.getUsageByPeopleData(),
+    dashboardService.getIdlenessPerRoleData()]).then((values) => {
+      payloadValues = values;
+    });
+
+    const stopTime = process.hrtime(startTime);
+    const elapsedTime = (stopTime[0] * 1000) + (stopTime[1] / 1000000);
+
+    payload = generatePayload(elapsedTime, payloadValues);
 
     await ApiResponseHandler.success(req, res, payload);
   } catch (error) {
@@ -45,7 +50,7 @@ function generatePayload(elapsedTime, values) {
   const usageDataByHours = {
     elapsedTime: usageByHours.elapsedTime,
     idle: usageByHours.totalAvailableHours - usageByHours.assignedHours,
-    busy: usageByHours.assignedHours 
+    busy: usageByHours.assignedHours
   };
 
   const usageDataByPeople = {
